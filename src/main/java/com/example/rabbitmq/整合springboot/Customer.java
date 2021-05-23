@@ -32,8 +32,7 @@ public class Customer {
         System.out.println("message1：" + message + "====时间戳：" + LocalDateTime.now());
 
     }
-
-    //第二种模型： work queue  工作队列 （轮询消费）
+    //（轮询消费）
     @RabbitListener(queuesToDeclare = @Queue("work_queue")) //指定某方法作为消息消费的方法，例如监听某 Queue 里面的消息
     @RabbitHandler
     public void workQueue2(String message) throws IOException {
