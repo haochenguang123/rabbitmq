@@ -1,4 +1,4 @@
-package com.example.rabbitmq.整合springboot;
+package com.example.rabbitmq.整合springboot.customer;
 
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.stereotype.Component;

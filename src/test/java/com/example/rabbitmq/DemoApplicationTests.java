@@ -1,11 +1,17 @@
 package com.example.rabbitmq;
 
+import cn.hutool.core.util.IdUtil;
+import com.example.rabbitmq.整合springboot.product.ExampleRabbitSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Scope;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
 
 @SpringBootTest(classes = DemoApplication.class)
 @RunWith(SpringRunner.class)
@@ -14,6 +20,9 @@ public class DemoApplicationTests {
     //注入rabbitmq
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private ExampleRabbitSender exampleRabbitSender;
+
 
     //1.hello world
     @Test
@@ -25,7 +34,7 @@ public class DemoApplicationTests {
     @Test
     public void workQueue() {
         for (int i = 0; i < 10; i++) {
-            rabbitTemplate.convertAndSend("work_queue", "hello work queue" + "消息=" + i);
+            exampleRabbitSender.convertAndSend("hello work queue" + "消息=" + i, new CorrelationData(IdUtil.simpleUUID()));
         }
     }
 
@@ -41,7 +50,7 @@ public class DemoApplicationTests {
     public void routing() {
         String routing = "direct_queue_error";
 //        String routing = "direct_queue_info";
-        rabbitTemplate.convertAndSend("direct_exchange", routing, "hello direct queue====="+routing);
+        rabbitTemplate.convertAndSend("direct_exchange", routing, "hello direct queue=====" + routing);
     }
 
 
@@ -50,7 +59,7 @@ public class DemoApplicationTests {
     public void topic() {
 
         String routing = "topic.info.1";
-        rabbitTemplate.convertAndSend("topic_exchange", routing, "hello topic queue====="+routing);
+        rabbitTemplate.convertAndSend("topic_exchange", routing, "hello topic queue=====" + routing);
     }
 
 }
