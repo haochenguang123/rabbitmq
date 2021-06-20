@@ -28,7 +28,7 @@ public class Customer {
     @RabbitListener(queuesToDeclare = @Queue("work_queue")) //指定某方法作为消息消费的方法，例如监听某 Queue 里面的消息
     @RabbitHandler
     public void workQueue1(String message) throws InterruptedException, IOException {
-        Thread.sleep(2000);
+//        Thread.sleep(2000);
         System.out.println("message1：" + message + "====时间戳：" + LocalDateTime.now());
 
     }

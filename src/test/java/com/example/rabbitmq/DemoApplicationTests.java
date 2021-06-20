@@ -35,6 +35,7 @@ public class DemoApplicationTests {
     public void workQueue() {
         for (int i = 0; i < 10; i++) {
             exampleRabbitSender.convertAndSend("hello work queue" + "消息=" + i, new CorrelationData(IdUtil.simpleUUID()));
+
         }
     }
 

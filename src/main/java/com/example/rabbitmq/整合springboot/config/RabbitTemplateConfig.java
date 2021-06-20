@@ -2,6 +2,7 @@ package com.example.rabbitmq.整合springboot.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.SerializerMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * 业务需求
@@ -35,7 +37,8 @@ import org.springframework.context.annotation.Scope;
  */
 @Slf4j
 @Configuration
-public class RabbitTemplateConfig {
+@Component
+public class RabbitTemplateConfig implements RabbitTemplate.ConfirmCallback{
 
     @Autowired
     ConnectionFactory connectionFactory;
@@ -56,6 +59,13 @@ public class RabbitTemplateConfig {
         rabbitTemplate.setMandatory(true);
         rabbitTemplate.setMessageConverter(new SerializerMessageConverter());
         return rabbitTemplate;
+    }
+
+    @Override
+    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+        System.out.println(correlationData);
+        System.out.println(ack);
+        System.out.println(cause);
     }
 
 }
